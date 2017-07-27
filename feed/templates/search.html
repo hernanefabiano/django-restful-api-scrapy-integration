@@ -1,0 +1,51 @@
+{% load static %}
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+	<div class="row">
+		
+		<div class="column smallport-24 medium-expand">
+			
+			<h3><p>Search result for: {{keyword}}</p></h3>
+			
+			<div class="news-list infinite-scroll-container row">
+				{% for news in search_result %}
+					{% if news.media %}
+					<div class="infinite-scroll-item smallport-24 small-12 medium-6 columns">
+						<div class="news-card">
+							<div class="news">
+								<a href="{{ news.url }}"><img src="{% if news.media %}{{news.media}} {% else %} {% static 'img/no_image.png' %} {% endif %}" alt="{{news.section}}"></a>
+							</div>
+							
+							<div class="news-details">
+								<p class="news">
+									<small>{{news.headline|default:"&nbsp;"}}</small>
+								</p>
+							</div>
+							<div class="row align-left collapse call-to-actions">
+								<small>{{news.section|default:"&nbsp;"}}</small>
+								<div class="small-4 columns shrink">
+									<span class="show-for-small">{{ news.summary|default:"&nbsp;"}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	
+	<script>
+        window.csrf_token = '{{ csrf_token }}';
+        window.home = "{% url 'home' %}";
+    </script>
+	<script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
